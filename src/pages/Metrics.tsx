@@ -102,7 +102,7 @@ export function Metrics() {
           <select
             value={periodFilter}
             onChange={(e) => setPeriodFilter(e.target.value)}
-            className="px-3 py-2 rounded-lg border border-gray-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-amber-500/30"
+            className="px-3 py-2 rounded-lg border border-[#cbd5e1] text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#00d9ff]/40 focus:border-[#00d9ff]"
           >
             <option value="week">Esta semana</option>
             <option value="month">Este mês</option>
@@ -117,24 +117,24 @@ export function Metrics() {
       </div>
 
       {/* Sales summary */}
-      <div className="bg-gradient-to-br from-amber-50 to-amber-100/50 rounded-2xl border border-amber-100 p-6">
-        <h2 className="text-lg font-semibold text-amber-900 mb-4 flex items-center gap-2">
+      <div className="bg-gradient-to-br from-[#05070d] to-[#0b2b55] rounded-2xl border border-[#172033] p-6">
+        <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
           <TrendingUp size={20} /> Resumo de Vendas
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           <div>
-            <p className="text-3xl font-bold text-amber-900">{filteredSales.length}</p>
-            <p className="text-sm text-amber-700">Vendas no período</p>
+            <p className="text-3xl font-bold text-[#00d9ff]">{filteredSales.length}</p>
+            <p className="text-sm text-[#94a3b8]">Vendas no período</p>
           </div>
           <div>
-            <p className="text-3xl font-bold text-amber-900">{formatBRL(totalSalesRevenue)}</p>
-            <p className="text-sm text-amber-700">Receita total</p>
+            <p className="text-3xl font-bold text-[#00d9ff]">{formatBRL(totalSalesRevenue)}</p>
+            <p className="text-sm text-[#94a3b8]">Receita total</p>
           </div>
           <div>
-            <p className="text-3xl font-bold text-amber-900">
+            <p className="text-3xl font-bold text-[#00d9ff]">
               {filteredSales.length > 0 ? formatBRL(totalSalesRevenue / filteredSales.length) : formatBRL(0)}
             </p>
-            <p className="text-sm text-amber-700">Ticket médio</p>
+            <p className="text-sm text-[#94a3b8]">Ticket médio</p>
           </div>
         </div>
       </div>
@@ -142,7 +142,7 @@ export function Metrics() {
       {/* Ad metrics */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
         <h2 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-          <BarChart3 size={20} className="text-amber-600" /> Desempenho de Anúncios
+          <BarChart3 size={20} className="text-[#2563eb]" /> Desempenho de Anúncios
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
           <MetricCard icon={Eye} label="Impressões" value={totalImpressions.toLocaleString('pt-BR')} />
@@ -186,7 +186,7 @@ export function Metrics() {
                     <td className="py-2 px-3 text-right">{m.clicks.toLocaleString('pt-BR')}</td>
                     <td className="py-2 px-3 text-right">{formatBRL(m.cost)}</td>
                     <td className="py-2 px-3 text-right">{m.conversions}</td>
-                    <td className="py-2 px-3 text-right font-medium text-emerald-600">{formatBRL(m.revenue)}</td>
+                    <td className="py-2 px-3 text-right font-medium text-[#0284c7]">{formatBRL(m.revenue)}</td>
                     {canEdit && (
                       <td className="py-2 px-3">
                         <button onClick={() => deleteMetric(m.id)} className="p-1 rounded hover:bg-red-50 text-red-500">
@@ -241,8 +241,8 @@ function MetricCard({ icon: Icon, label, value }: { icon: typeof Eye; label: str
 
 function KPI({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
   return (
-    <div className={`p-3 rounded-lg border ${highlight ? 'bg-emerald-50 border-emerald-200' : 'bg-gray-50 border-gray-100'}`}>
-      <p className={`text-lg font-bold ${highlight ? 'text-emerald-700' : 'text-gray-800'}`}>{value}</p>
+    <div className={`p-3 rounded-lg border ${highlight ? 'bg-[#e0f2fe] border-[#bae6fd]' : 'bg-[#eef2f9] border-[#e2e8f0]'}`}>
+      <p className={`text-lg font-bold ${highlight ? 'text-[#0284c7]' : 'text-[#0f172a]'}`}>{value}</p>
       <p className="text-xs text-gray-500">{label}</p>
     </div>
   );

@@ -203,7 +203,7 @@ export function Dashboard({ onNavigate }: { onNavigate: (page: string) => void }
           label="Clientes"
           value={stats.customersTotalCount}
           subtext={`${stats.customersNewThisMonthCount} novos este mês`}
-          color="amber"
+          color="blue"
           onClick={() => onNavigate('customers')}
         />
         <StatCard
@@ -273,7 +273,7 @@ export function Dashboard({ onNavigate }: { onNavigate: (page: string) => void }
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-gray-800">Atendimentos Recentes</h2>
-            <button onClick={() => onNavigate('tickets')} className="text-sm text-amber-600 hover:text-amber-700 font-medium">
+            <button onClick={() => onNavigate('tickets')} className="text-sm text-[#2563eb] hover:text-[#1d4ed8] font-medium">
               Ver todos
             </button>
           </div>
@@ -298,7 +298,7 @@ export function Dashboard({ onNavigate }: { onNavigate: (page: string) => void }
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-gray-800">Vendas Recentes</h2>
-              <button onClick={() => onNavigate('sales')} className="text-sm text-amber-600 hover:text-amber-700 font-medium">
+              <button onClick={() => onNavigate('sales')} className="text-sm text-[#2563eb] hover:text-[#1d4ed8] font-medium">
                 Ver todas
               </button>
             </div>
@@ -312,7 +312,7 @@ export function Dashboard({ onNavigate }: { onNavigate: (page: string) => void }
                       <p className="text-sm font-medium text-gray-700">#{String(s.sale_number).padStart(5, '0')} — {s.customer?.name || '-'}</p>
                       <p className="text-xs text-gray-400">{s.plan?.name || '-'} {s.variation ? `(${s.variation})` : ''}</p>
                     </div>
-                    <span className="text-sm font-semibold text-emerald-600">{formatBRL(s.final_amount)}</span>
+                    <span className="text-sm font-semibold text-[#0284c7]">{formatBRL(s.final_amount)}</span>
                   </div>
                 ))}
               </div>
@@ -326,10 +326,10 @@ export function Dashboard({ onNavigate }: { onNavigate: (page: string) => void }
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-              <BarChart3 size={20} className="text-amber-600" />
+              <BarChart3 size={20} className="text-[#2563eb]" />
               Desempenho de Anúncios (Mês)
             </h2>
-            <button onClick={() => onNavigate('metrics')} className="text-sm text-amber-600 hover:text-amber-700 font-medium">
+            <button onClick={() => onNavigate('metrics')} className="text-sm text-[#2563eb] hover:text-[#1d4ed8] font-medium">
               Detalhar
             </button>
           </div>
@@ -340,10 +340,10 @@ export function Dashboard({ onNavigate }: { onNavigate: (page: string) => void }
             <MiniStat label="Investimento" value={formatBRL(stats.adSpendThisMonth)} />
           </div>
           {stats.adSpendThisMonth > 0 && (
-            <div className="mt-4 p-3 rounded-lg bg-amber-50 border border-amber-100">
+            <div className="mt-4 p-3 rounded-lg bg-[#e0f2fe] border border-[#bae6fd]">
               <div className="flex items-center gap-2">
-                <AlertCircle size={16} className="text-amber-600" />
-                <p className="text-sm text-amber-800">
+                <AlertCircle size={16} className="text-[#0284c7]" />
+                <p className="text-sm text-[#075985]">
                   ROAS: <span className="font-bold">{(stats.adRevenueThisMonth / stats.adSpendThisMonth).toFixed(2)}x</span>
                   {' '}— Receita: {formatBRL(stats.adRevenueThisMonth)}
                 </p>
@@ -364,9 +364,9 @@ function StatCard({ icon: Icon, label, value, subtext, color, onClick }: {
   icon: typeof Users; label: string; value: string | number; subtext?: string; color: string; onClick?: () => void;
 }) {
   const colors: Record<string, string> = {
-    amber: 'bg-amber-50 text-amber-600',
+    amber: 'bg-[#e0f2fe] text-[#0284c7]',
     blue: 'bg-blue-50 text-blue-600',
-    green: 'bg-emerald-50 text-emerald-600',
+    green: 'bg-[#e0f2fe] text-[#0284c7]',
     purple: 'bg-purple-50 text-purple-600',
   };
   return (

@@ -49,9 +49,9 @@ function AppContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-[#f7f9fc] flex">
       {/* Sidebar — desktop */}
-      <aside className="hidden md:flex flex-col w-64 bg-white border-r border-gray-100 fixed inset-y-0 left-0 z-30">
+      <aside className="hidden md:flex flex-col w-64 bg-[#05070d] border-r border-[#172033] fixed inset-y-0 left-0 z-30">
         <SidebarContent activePage={activePage} onNavigate={navigate} navItems={visibleNav} />
       </aside>
 
@@ -59,7 +59,7 @@ function AppContent() {
       {sidebarOpen && (
         <>
           <div className="fixed inset-0 bg-black/30 z-40 md:hidden" onClick={() => setSidebarOpen(false)} />
-          <aside className="fixed inset-y-0 left-0 w-64 bg-white z-50 md:hidden flex flex-col">
+          <aside className="fixed inset-y-0 left-0 w-64 bg-[#05070d] z-50 md:hidden flex flex-col">
             <SidebarContent
               activePage={activePage}
               onNavigate={navigate}
@@ -73,19 +73,19 @@ function AppContent() {
       {/* Main content */}
       <div className="flex-1 md:ml-64 flex flex-col min-h-screen">
         {/* Top bar */}
-        <header className="bg-white border-b border-gray-100 px-4 py-3 flex items-center justify-between sticky top-0 z-20">
+        <header className="bg-[#05070d] border-b border-[#172033] px-4 py-3 flex items-center justify-between sticky top-0 z-20">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="md:hidden p-1.5 rounded-lg hover:bg-gray-100"
+              className="md:hidden p-1.5 rounded-lg hover:bg-[#101a2d]"
             >
-              <Menu size={22} className="text-gray-600" />
+              <Menu size={22} className="text-white" />
             </button>
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#00d9ff] to-[#2563eb] flex items-center justify-center shadow-[0_0_18px_rgba(0,217,255,0.35)]">
                 <span className="text-white font-bold text-sm">G</span>
               </div>
-              <span className="font-semibold text-gray-800 hidden sm:block">Gestão Operacional</span>
+              <span className="font-semibold text-white hidden sm:block tracking-tight">Gestão Operacional</span>
             </div>
           </div>
           <RoleSelector />
@@ -116,19 +116,19 @@ function SidebarContent({
 }) {
   return (
     <>
-      <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+      <div className="flex items-center justify-between px-5 py-4 border-b border-[#172033]">
         <div className="flex items-center gap-2">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-sm">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#00d9ff] to-[#2563eb] flex items-center justify-center shadow-[0_0_22px_rgba(0,217,255,0.3)]">
             <span className="text-white font-bold">G</span>
           </div>
           <div>
-            <p className="font-semibold text-gray-800 text-sm">Gestão</p>
-            <p className="text-xs text-gray-400">Operacional</p>
+            <p className="font-semibold text-white text-sm">Gestão</p>
+            <p className="text-xs text-[#7d8ba5]">Operacional</p>
           </div>
         </div>
         {onClose && (
-          <button onClick={onClose} className="md:hidden p-1 rounded-lg hover:bg-gray-100">
-            <X size={20} className="text-gray-500" />
+          <button onClick={onClose} className="md:hidden p-1 rounded-lg hover:bg-[#101a2d]">
+            <X size={20} className="text-[#9ba9c4]" />
           </button>
         )}
       </div>
@@ -142,18 +142,18 @@ function SidebarContent({
               onClick={() => onNavigate(item.id)}
               className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
                 isActive
-                  ? 'bg-amber-50 text-amber-700 border border-amber-100'
-                  : 'text-gray-600 hover:bg-gray-50'
+                  ? 'bg-[#0b2b55] text-[#6ee7ff] border border-[#0e7490] shadow-[inset_3px_0_0_#00d9ff]'
+                  : 'text-[#9ba9c4] hover:bg-[#101a2d] hover:text-white'
               }`}
             >
-              <Icon size={18} className={isActive ? 'text-amber-600' : 'text-gray-400'} />
+              <Icon size={18} className={isActive ? 'text-[#00d9ff]' : 'text-[#62718c]'} />
               {item.label}
             </button>
           );
         })}
       </nav>
-      <div className="px-5 py-4 border-t border-gray-100">
-        <p className="text-xs text-gray-400">Sistema de Gestão Operacional v1.0</p>
+      <div className="px-5 py-4 border-t border-[#172033]">
+        <p className="text-xs text-[#62718c]">Sistema de Gestão Operacional v1.0</p>
       </div>
     </>
   );

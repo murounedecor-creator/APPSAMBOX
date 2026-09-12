@@ -10,9 +10,9 @@ const ROLE_ICONS: Record<Role, typeof Crown> = {
 };
 
 const ROLE_COLORS: Record<Role, string> = {
-  owner: 'text-amber-600 bg-amber-50 border-amber-200',
-  manager: 'text-blue-600 bg-blue-50 border-blue-200',
-  technician: 'text-emerald-600 bg-emerald-50 border-emerald-200',
+  owner: 'text-[#00d9ff] bg-[#0b2b55] border-[#0e7490]',
+  manager: 'text-[#2563eb] bg-[#eef2f9] border-[#bfdbfe]',
+  technician: 'text-[#0284c7] bg-[#e0f2fe] border-[#bae6fd]',
 };
 
 export function RoleSelector() {
@@ -33,7 +33,7 @@ export function RoleSelector() {
       {open && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
-          <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 z-50 overflow-hidden">
+          <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-[#e2e8f0] z-50 overflow-hidden">
             {(Object.keys(ROLE_LABELS) as Role[]).map((r) => {
               const RIcon = ROLE_ICONS[r];
               return (
@@ -44,7 +44,7 @@ export function RoleSelector() {
                     setOpen(false);
                   }}
                   className={`w-full flex items-center gap-3 px-4 py-3 text-sm transition-colors ${
-                    role === r ? 'bg-gray-50 font-semibold' : 'hover:bg-gray-50'
+                    role === r ? 'bg-[#eef2f9] font-semibold' : 'hover:bg-[#eef2f9]'
                   }`}
                 >
                   <RIcon size={18} className={ROLE_COLORS[r].split(' ')[0]} />

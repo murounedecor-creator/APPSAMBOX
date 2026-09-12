@@ -153,7 +153,7 @@ export function Customers() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Buscar por nome, telefone ou e-mail..."
-          className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500"
+          className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-[#cbd5e1] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#00d9ff]/40 focus:border-[#00d9ff]"
         />
       </div>
 
@@ -172,7 +172,7 @@ export function Customers() {
                 </div>
                 {canEdit && (
                   <div className="flex gap-1">
-                    <button onClick={() => openPlans(c)} className="p-1.5 rounded-lg hover:bg-amber-50 text-amber-600" title="Planos">
+                    <button onClick={() => openPlans(c)} className="p-1.5 rounded-lg hover:bg-[#e0f2fe] text-[#0284c7]" title="Planos">
                       <Tag size={16} />
                     </button>
                     <button onClick={() => openEdit(c)} className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-600" title="Editar">
@@ -216,7 +216,7 @@ export function Customers() {
                 type="checkbox"
                 checked={form.has_discount}
                 onChange={(e) => setForm({ ...form, has_discount: e.target.checked })}
-                className="w-4 h-4 rounded accent-amber-600"
+                className="w-4 h-4 rounded accent-[#2563eb]"
               />
               <span className="text-sm font-medium text-gray-700">Possui desconto</span>
             </label>
@@ -242,7 +242,7 @@ export function Customers() {
             ) : (
               <div className="space-y-2">
                 {customerPlans.map((cp) => (
-                  <div key={cp.id} className="flex items-center justify-between p-3 rounded-lg bg-amber-50 border border-amber-100">
+                  <div key={cp.id} className="flex items-center justify-between p-3 rounded-lg bg-[#e0f2fe] border border-[#bae6fd]">
                     <div>
                       <p className="font-medium text-gray-800">{cp.plan?.name || 'Plano removido'}</p>
                       {cp.variation && <p className="text-xs text-gray-500">Variação: {cp.variation}</p>}
@@ -289,7 +289,7 @@ function AddPlanForm({ plans, onAdd }: { plans: Plan[]; onAdd: (planId: string, 
           <select
             value={planId}
             onChange={(e) => setPlanId(e.target.value)}
-            className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/30 bg-white"
+            className="w-full px-3 py-2 rounded-lg border border-[#cbd5e1] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#00d9ff]/40 focus:border-[#00d9ff]"
           >
             <option value="">Selecione um plano...</option>
             {plans.map((p) => (
@@ -301,7 +301,7 @@ function AddPlanForm({ plans, onAdd }: { plans: Plan[]; onAdd: (planId: string, 
           value={variation}
           onChange={(e) => setVariation(e.target.value)}
           placeholder="Variação (opcional)"
-          className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/30"
+          className="flex-1 px-3 py-2 rounded-lg border border-[#cbd5e1] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#00d9ff]/40 focus:border-[#00d9ff]"
         />
         <Button size="sm" onClick={() => { if (planId) { onAdd(planId, variation); setPlanId(''); setVariation(''); } }}>
           <Plus size={16} />

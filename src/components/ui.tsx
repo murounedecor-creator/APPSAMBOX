@@ -25,12 +25,12 @@ export function Modal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
       <div className={`relative bg-white rounded-2xl shadow-2xl w-full ${maxWidth} max-h-[90vh] overflow-hidden flex flex-col`}>
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-          <h2 className="text-lg font-semibold text-gray-800">{title}</h2>
-          <button onClick={onClose} className="p-1 rounded-lg hover:bg-gray-100 transition-colors">
-            <X size={20} className="text-gray-500" />
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#e2e8f0]">
+          <h2 className="text-lg font-semibold text-[#0f172a]">{title}</h2>
+          <button onClick={onClose} className="p-1 rounded-lg hover:bg-[#eef2f9] transition-colors">
+            <X size={20} className="text-[#62718c]" />
           </button>
         </div>
         <div className="overflow-y-auto px-6 py-5 flex-1">{children}</div>
@@ -57,11 +57,11 @@ export function Button({
   className?: string;
 }) {
   const variants = {
-    primary: 'bg-amber-600 text-white hover:bg-amber-700 shadow-sm',
-    secondary: 'bg-gray-100 text-gray-700 hover:bg-gray-200',
+    primary: 'bg-[#2563eb] text-white hover:bg-[#1d4ed8] shadow-sm',
+    secondary: 'bg-[#eef2f9] text-[#1e293b] hover:bg-[#e2e8f0]',
     danger: 'bg-red-50 text-red-600 hover:bg-red-100 border border-red-200',
-    ghost: 'text-gray-600 hover:bg-gray-100',
-    success: 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-sm',
+    ghost: 'text-[#62718c] hover:bg-[#eef2f9]',
+    success: 'bg-[#0ea5e9] text-white hover:bg-[#0284c7] shadow-sm',
   };
   const sizes = {
     sm: 'px-3 py-1.5 text-xs',
@@ -104,7 +104,7 @@ export function Input({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         required={required}
-        className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 transition-all"
+        className="w-full px-3 py-2 rounded-lg border border-[#cbd5e1] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#00d9ff]/40 focus:border-[#00d9ff] transition-all"
       />
     </div>
   );
@@ -132,7 +132,7 @@ export function Select({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         required={required}
-        className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 transition-all bg-white"
+        className="w-full px-3 py-2 rounded-lg border border-[#cbd5e1] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#00d9ff]/40 focus:border-[#00d9ff] transition-all"
       >
         <option value="">{placeholder}</option>
         {options.map((opt) => (
@@ -164,7 +164,7 @@ export function Textarea({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         rows={rows}
-        className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 transition-all resize-none"
+        className="w-full px-3 py-2 rounded-lg border border-[#cbd5e1] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#00d9ff]/40 focus:border-[#00d9ff] transition-all resize-none"
       />
     </div>
   );
@@ -172,13 +172,13 @@ export function Textarea({
 
 export function Badge({ children, color = 'gray' }: { children: ReactNode; color?: string }) {
   const colors: Record<string, string> = {
-    gray: 'bg-gray-100 text-gray-700',
-    amber: 'bg-amber-100 text-amber-700',
-    blue: 'bg-blue-100 text-blue-700',
-    green: 'bg-emerald-100 text-emerald-700',
+    gray: 'bg-[#eef2f9] text-[#475569]',
+    amber: 'bg-[#0e7490]/10 text-[#0e7490]',
+    blue: 'bg-[#2563eb]/10 text-[#2563eb]',
+    green: 'bg-[#0ea5e9]/10 text-[#0284c7]',
     red: 'bg-red-100 text-red-700',
     orange: 'bg-orange-100 text-orange-700',
-    purple: 'bg-purple-100 text-purple-700',
+    purple: 'bg-[#7c3aed]/10 text-[#7c3aed]',
   };
   return (
     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${colors[color] || colors.gray}`}>
@@ -190,11 +190,11 @@ export function Badge({ children, color = 'gray' }: { children: ReactNode; color
 export function EmptyState({ icon: Icon, title, subtitle }: { icon: typeof X; title: string; subtitle?: string }) {
   return (
     <div className="flex flex-col items-center justify-center py-16 text-center">
-      <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
-        <Icon size={28} className="text-gray-400" />
+      <div className="w-16 h-16 rounded-full bg-[#eef2f9] flex items-center justify-center mb-4">
+        <Icon size={28} className="text-[#94a3b8]" />
       </div>
-      <p className="text-gray-500 font-medium">{title}</p>
-      {subtitle && <p className="text-gray-400 text-sm mt-1">{subtitle}</p>}
+      <p className="text-[#475569] font-medium">{title}</p>
+      {subtitle && <p className="text-[#94a3b8] text-sm mt-1">{subtitle}</p>}
     </div>
   );
 }
@@ -202,7 +202,7 @@ export function EmptyState({ icon: Icon, title, subtitle }: { icon: typeof X; ti
 export function LoadingSpinner() {
   return (
     <div className="flex items-center justify-center py-12">
-      <div className="w-8 h-8 border-3 border-amber-200 border-t-amber-600 rounded-full animate-spin" />
+      <div className="w-8 h-8 border-3 border-[#bae6fd] border-t-[#00d9ff] rounded-full animate-spin" />
     </div>
   );
 }
