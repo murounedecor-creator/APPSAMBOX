@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "name": "Gestão Operacional",
+    "slug": "gestao-operacional",
+    "version": "1.0.0",
+    "scheme": "gestao",
+    "platforms": ["ios", "android"],
+    "ios": { "bundleIdentifier": "com.gestao.operacional" },
+    "android": { "package": "com.gestao.operacional" },
+    "plugins": ["expo-router"]
+  }
+}

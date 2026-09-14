@@ -1,82 +1,103 @@
-import { type ReactNode, useEffect } from 'react';
-import { X } from 'lucide-react';
+import { type ReactNode } from 'react';
+import {
+  View, Text, Pressable, TextInput, Modal as RNModal,
+  ScrollView, ActivityIndicator, StyleSheet
+} from 'react-native';
+
+const COLORS = {
+  bg: '#0a0e17',
+  card: '#121826',
+  border: '#1e293b',
+  borderHover: '#334155',
+  primary: '#00d2ff',
+  primaryDark: '#0077b6',
+  text: '#f1f5f9',
+  textMuted: '#64748b',
+  textDim: '#94a3b8',
+  red: '#ef4444',
+  green: '#10b981',
+  amber: '#f59e0b',
+  purple: '#a78bfa',
+};
 
 export function Modal({
   open,
   onClose,
   title,
   children,
-  maxWidth = 'max-w-lg',
 }: {
   open: boolean;
   onClose: () => void;
   title: string;
   children: ReactNode;
-  maxWidth?: string;
 }) {
-  useEffect(() => {
-    if (open) {
-      document.body.style.overflow = 'hidden';
-      return () => { document.body.style.overflow = ''; };
-    }
-  }, [open]);
-
-  if (!open) return null;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-      <div className={`relative bg-white rounded-2xl shadow-2xl w-full ${maxWidth} max-h-[90vh] overflow-hidden flex flex-col`}>
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#e2e8f0]">
-          <h2 className="text-lg font-semibold text-[#0f172a]">{title}</h2>
-          <button onClick={onClose} className="p-1 rounded-lg hover:bg-[#eef2f9] transition-colors">
-            <X size={20} className="text-[#62718c]" />
-          </button>
-        </div>
-        <div className="overflow-y-auto px-6 py-5 flex-1">{children}</div>
-      </div>
-    </div>
+    <RNModal visible={open} animationType="slide" transparent onRequestClose={onClose}>
+      <View style={styles.modalOverlay}>
+        <Pressable style={styles.modalBackdrop} onPress={onClose} />
+        <View style={styles.modalCard}>
+          <View style={styles.modalHeader}>
+            <Text style={styles.modalTitle}>{title}</Text>
+            <Pressable onPress={onClose} style={styles.modalCloseBtn}>
+              <Text style={styles.modalCloseText}>X</Text>
+            </Pressable>
+          </View>
+          <ScrollView style={styles.modalBody} showsVerticalScrollIndicator={false}>
+            {children}
+          </ScrollView>
+        </View>
+      </View>
+    </RNModal>
   );
 }
 
 export function Button({
   children,
-  onClick,
+  onPress,
   variant = 'primary',
   size = 'md',
-  type = 'button',
   disabled = false,
-  className = '',
 }: {
   children: ReactNode;
-  onClick?: () => void;
+  onPress?: () => void;
   variant?: 'primary' | 'secondary' | 'danger' | 'ghost' | 'success';
   size?: 'sm' | 'md' | 'lg';
-  type?: 'button' | 'submit';
   disabled?: boolean;
-  className?: string;
 }) {
-  const variants = {
-    primary: 'bg-[#2563eb] text-white hover:bg-[#1d4ed8] shadow-sm',
-    secondary: 'bg-[#eef2f9] text-[#1e293b] hover:bg-[#e2e8f0]',
-    danger: 'bg-red-50 text-red-600 hover:bg-red-100 border border-red-200',
-    ghost: 'text-[#62718c] hover:bg-[#eef2f9]',
-    success: 'bg-[#0ea5e9] text-white hover:bg-[#0284c7] shadow-sm',
+  const variantStyles = {
+    primary: { backgroundColor: COLORS.primary },
+    secondary: { backgroundColor: COLORS.border, borderWidth: 1, borderColor: COLORS.borderHover },
+    danger: { backgroundColor: '#450a0a', borderWidth: 1, borderColor: '#7f1d1d' },
+    ghost: { backgroundColor: 'transparent' },
+    success: { backgroundColor: 'rgba(0,210,255,0.15)', borderWidth: 1, borderColor: 'rgba(0,210,255,0.3)' },
   };
-  const sizes = {
-    sm: 'px-3 py-1.5 text-xs',
-    md: 'px-4 py-2 text-sm',
-    lg: 'px-6 py-3 text-base',
+  const variantText = {
+    primary: { color: COLORS.bg, fontWeight: '600' as const },
+    secondary: { color: COLORS.textDim },
+    danger: { color: COLORS.red },
+    ghost: { color: COLORS.textMuted },
+    success: { color: COLORS.primary },
   };
+  const sizeStyles = {
+    sm: { paddingHorizontal: 12, paddingVertical: 6 },
+    md: { paddingHorizontal: 16, paddingVertical: 8 },
+    lg: { paddingHorizontal: 24, paddingVertical: 12 },
+  };
+  const sizeText = { sm: 12, md: 14, lg: 16 };
   return (
-    <button
-      type={type}
-      onClick={onClick}
+    <Pressable
+      onPress={onPress}
       disabled={disabled}
-      className={`rounded-lg font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed ${variants[variant]} ${sizes[size]} ${className}`}
+      style={({ pressed }) => [
+        styles.btnBase,
+        variantStyles[variant],
+        sizeStyles[size],
+        pressed && { opacity: 0.8 },
+        disabled && { opacity: 0.5 },
+      ]}
     >
-      {children}
-    </button>
+      <Text style={[{ fontSize: sizeText[size] }, variantText[variant]]}>{children}</Text>
+    </Pressable>
   );
 }
 
@@ -84,29 +105,31 @@ export function Input({
   label,
   value,
   onChange,
-  type = 'text',
   placeholder = '',
   required = false,
+  keyboardType = 'default',
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
-  type?: string;
   placeholder?: string;
   required?: boolean;
+  keyboardType?: 'default' | 'numeric' | 'email-address' | 'phone-pad';
 }) {
   return (
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">{label}{required && <span className="text-red-500"> *</span>}</label>
-      <input
-        type={type}
+    <View style={styles.inputContainer}>
+      <Text style={styles.inputLabel}>
+        {label}{required && <Text style={{ color: COLORS.red }}> *</Text>}
+      </Text>
+      <TextInput
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChangeText={onChange}
         placeholder={placeholder}
-        required={required}
-        className="w-full px-3 py-2 rounded-lg border border-[#cbd5e1] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#00d9ff]/40 focus:border-[#00d9ff] transition-all"
+        keyboardType={keyboardType}
+        placeholderTextColor={COLORS.textMuted}
+        style={styles.input}
       />
-    </div>
+    </View>
   );
 }
 
@@ -126,20 +149,34 @@ export function Select({
   placeholder?: string;
 }) {
   return (
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">{label}{required && <span className="text-red-500"> *</span>}</label>
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        required={required}
-        className="w-full px-3 py-2 rounded-lg border border-[#cbd5e1] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#00d9ff]/40 focus:border-[#00d9ff] transition-all"
-      >
-        <option value="">{placeholder}</option>
+    <View style={styles.inputContainer}>
+      <Text style={styles.inputLabel}>
+        {label}{required && <Text style={{ color: COLORS.red }}> *</Text>}
+      </Text>
+      <View style={styles.selectContainer}>
+        {placeholder && (
+          <Pressable
+            onPress={() => onChange('')}
+            style={[styles.selectOption, value === '' && styles.selectOptionActive]}
+          >
+            <Text style={[styles.selectOptionText, value === '' && styles.selectOptionTextActive]}>
+              {placeholder}
+            </Text>
+          </Pressable>
+        )}
         {options.map((opt) => (
-          <option key={opt.value} value={opt.value}>{opt.label}</option>
+          <Pressable
+            key={opt.value}
+            onPress={() => onChange(opt.value)}
+            style={[styles.selectOption, value === opt.value && styles.selectOptionActive]}
+          >
+            <Text style={[styles.selectOptionText, value === opt.value && styles.selectOptionTextActive]}>
+              {opt.label}
+            </Text>
+          </Pressable>
         ))}
-      </select>
-    </div>
+      </View>
+    </View>
   );
 }
 
@@ -148,61 +185,88 @@ export function Textarea({
   value,
   onChange,
   placeholder = '',
-  rows = 3,
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
   placeholder?: string;
-  rows?: number;
 }) {
   return (
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-      <textarea
+    <View style={styles.inputContainer}>
+      <Text style={styles.inputLabel}>{label}</Text>
+      <TextInput
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChangeText={onChange}
         placeholder={placeholder}
-        rows={rows}
-        className="w-full px-3 py-2 rounded-lg border border-[#cbd5e1] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#00d9ff]/40 focus:border-[#00d9ff] transition-all resize-none"
+        placeholderTextColor={COLORS.textMuted}
+        multiline
+        numberOfLines={3}
+        textAlignVertical="top"
+        style={[styles.input, { minHeight: 72 }]}
       />
-    </div>
+    </View>
   );
 }
 
 export function Badge({ children, color = 'gray' }: { children: ReactNode; color?: string }) {
-  const colors: Record<string, string> = {
-    gray: 'bg-[#eef2f9] text-[#475569]',
-    amber: 'bg-[#0e7490]/10 text-[#0e7490]',
-    blue: 'bg-[#2563eb]/10 text-[#2563eb]',
-    green: 'bg-[#0ea5e9]/10 text-[#0284c7]',
-    red: 'bg-red-100 text-red-700',
-    orange: 'bg-orange-100 text-orange-700',
-    purple: 'bg-[#7c3aed]/10 text-[#7c3aed]',
+  const colorMap: Record<string, { bg: string; text: string; border: string }> = {
+    gray: { bg: '#1e293b', text: COLORS.textMuted, border: 'transparent' },
+    amber: { bg: 'rgba(245,158,11,0.15)', text: COLORS.amber, border: 'rgba(245,158,11,0.2)' },
+    blue: { bg: 'rgba(0,210,255,0.15)', text: COLORS.primary, border: 'rgba(0,210,255,0.2)' },
+    green: { bg: 'rgba(16,185,129,0.15)', text: COLORS.green, border: 'rgba(16,185,129,0.2)' },
+    red: { bg: 'rgba(239,68,68,0.15)', text: COLORS.red, border: 'rgba(239,68,68,0.2)' },
+    orange: { bg: 'rgba(249,115,22,0.15)', text: '#f97316', border: 'rgba(249,115,22,0.2)' },
+    purple: { bg: 'rgba(167,139,250,0.15)', text: COLORS.purple, border: 'rgba(167,139,250,0.2)' },
   };
+  const c = colorMap[color] || colorMap.gray;
   return (
-    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${colors[color] || colors.gray}`}>
-      {children}
-    </span>
+    <View style={[styles.badge, { backgroundColor: c.bg, borderColor: c.border }]}>
+      <Text style={[styles.badgeText, { color: c.text }]}>{children}</Text>
+    </View>
   );
 }
 
-export function EmptyState({ icon: Icon, title, subtitle }: { icon: typeof X; title: string; subtitle?: string }) {
+export function EmptyState({ title, subtitle }: { title: string; subtitle?: string }) {
   return (
-    <div className="flex flex-col items-center justify-center py-16 text-center">
-      <div className="w-16 h-16 rounded-full bg-[#eef2f9] flex items-center justify-center mb-4">
-        <Icon size={28} className="text-[#94a3b8]" />
-      </div>
-      <p className="text-[#475569] font-medium">{title}</p>
-      {subtitle && <p className="text-[#94a3b8] text-sm mt-1">{subtitle}</p>}
-    </div>
+    <View style={styles.emptyState}>
+      <View style={styles.emptyIcon} />
+      <Text style={styles.emptyTitle}>{title}</Text>
+      {subtitle && <Text style={styles.emptySubtitle}>{subtitle}</Text>}
+    </View>
   );
 }
 
 export function LoadingSpinner() {
   return (
-    <div className="flex items-center justify-center py-12">
-      <div className="w-8 h-8 border-3 border-[#bae6fd] border-t-[#00d9ff] rounded-full animate-spin" />
-    </div>
+    <View style={styles.loadingContainer}>
+      <ActivityIndicator size="large" color={COLORS.primary} />
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  modalOverlay: { flex: 1, justifyContent: 'flex-end' },
+  modalBackdrop: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.7)' },
+  modalCard: { backgroundColor: COLORS.card, borderTopLeftRadius: 20, borderTopRightRadius: 20, maxHeight: '90%', borderColor: COLORS.border, borderWidth: 1 },
+  modalHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 16, borderBottomWidth: 1, borderBottomColor: COLORS.border },
+  modalTitle: { fontSize: 18, fontWeight: '600', color: COLORS.text },
+  modalCloseBtn: { padding: 8 },
+  modalCloseText: { color: COLORS.textMuted, fontSize: 16, fontWeight: '600' },
+  modalBody: { paddingHorizontal: 20, paddingVertical: 20 },
+  btnBase: { borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
+  inputContainer: { marginBottom: 16 },
+  inputLabel: { fontSize: 14, fontWeight: '500', color: COLORS.textDim, marginBottom: 6 },
+  input: { borderWidth: 1, borderColor: COLORS.border, backgroundColor: COLORS.bg, color: COLORS.text, borderRadius: 10, paddingHorizontal: 12, paddingVertical: 10, fontSize: 14 },
+  selectContainer: { borderWidth: 1, borderColor: COLORS.border, backgroundColor: COLORS.bg, borderRadius: 10, overflow: 'hidden' },
+  selectOption: { paddingHorizontal: 12, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: COLORS.border },
+  selectOptionActive: { backgroundColor: 'rgba(0,210,255,0.1)' },
+  selectOptionText: { fontSize: 14, color: COLORS.textDim },
+  selectOptionTextActive: { color: COLORS.primary, fontWeight: '600' },
+  badge: { paddingHorizontal: 10, paddingVertical: 2, borderRadius: 9999, borderWidth: 1, alignSelf: 'flex-start' },
+  badgeText: { fontSize: 12, fontWeight: '500' },
+  emptyState: { alignItems: 'center', justifyContent: 'center', paddingVertical: 64 },
+  emptyIcon: { width: 64, height: 64, borderRadius: 9999, backgroundColor: COLORS.border, borderWidth: 1, borderColor: COLORS.borderHover, marginBottom: 16 },
+  emptyTitle: { color: COLORS.textDim, fontWeight: '500', fontSize: 16 },
+  emptySubtitle: { color: COLORS.textMuted, fontSize: 14, marginTop: 4 },
+  loadingContainer: { alignItems: 'center', justifyContent: 'center', paddingVertical: 48 },
+});

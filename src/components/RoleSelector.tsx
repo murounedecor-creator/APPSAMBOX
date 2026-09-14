@@ -1,60 +1,80 @@
 import { useState } from 'react';
-import { Crown, ClipboardList, Wrench, ChevronDown } from 'lucide-react';
+import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useRole } from '@/lib/RoleContext';
 import { ROLE_LABELS, type Role } from '@/lib/supabase';
 
-const ROLE_ICONS: Record<Role, typeof Crown> = {
-  owner: Crown,
-  manager: ClipboardList,
-  technician: Wrench,
+const ROLE_ICONS: Record<Role, keyof typeof Ionicons.glyphMap> = {
+  owner: 'key',
+  manager: 'clipboard',
+  technician: 'build',
 };
 
-const ROLE_COLORS: Record<Role, string> = {
-  owner: 'text-[#00d9ff] bg-[#0b2b55] border-[#0e7490]',
-  manager: 'text-[#2563eb] bg-[#eef2f9] border-[#bfdbfe]',
-  technician: 'text-[#0284c7] bg-[#e0f2fe] border-[#bae6fd]',
+const ROLE_COLORS: Record<Role, { text: string; bg: string; border: string }> = {
+  owner: { text: '#00d2ff', bg: 'rgba(0,210,255,0.1)', border: 'rgba(0,210,255,0.2)' },
+  manager: { text: '#94a3b8', bg: '#1e293b', border: '#334155' },
+  technician: { text: '#94a3b8', bg: '#1e293b', border: '#334155' },
 };
 
 export function RoleSelector() {
   const { role, setRole } = useRole();
   const [open, setOpen] = useState(false);
-  const Icon = ROLE_ICONS[role];
+  const c = ROLE_COLORS[role];
 
   return (
-    <div className="relative">
-      <button
-        onClick={() => setOpen(!open)}
-        className={`flex items-center gap-2 px-3 py-2 rounded-lg border transition-all ${ROLE_COLORS[role]} hover:shadow-md`}
+    <View>
+      <Pressable
+        onPress={() => setOpen(!open)}
+        style={({ pressed }) => [
+          styles.selector,
+          { backgroundColor: c.bg, borderColor: c.border },
+          pressed && { opacity: 0.8 },
+        ]}
       >
-        <Icon size={18} />
-        <span className="font-medium text-sm">{ROLE_LABELS[role]}</span>
-        <ChevronDown size={16} className={`transition-transform ${open ? 'rotate-180' : ''}`} />
-      </button>
+        <Ionicons name={ROLE_ICONS[role]} size={18} color={c.text} />
+        <Text style={[styles.selectorText, { color: c.text }]}>{ROLE_LABELS[role]}</Text>
+        <Ionicons name={open ? 'chevron-up' : 'chevron-down'} size={16} color={c.text} />
+      </Pressable>
+
       {open && (
-        <>
-          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
-          <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-[#e2e8f0] z-50 overflow-hidden">
-            {(Object.keys(ROLE_LABELS) as Role[]).map((r) => {
-              const RIcon = ROLE_ICONS[r];
-              return (
-                <button
-                  key={r}
-                  onClick={() => {
-                    setRole(r);
-                    setOpen(false);
-                  }}
-                  className={`w-full flex items-center gap-3 px-4 py-3 text-sm transition-colors ${
-                    role === r ? 'bg-[#eef2f9] font-semibold' : 'hover:bg-[#eef2f9]'
-                  }`}
-                >
-                  <RIcon size={18} className={ROLE_COLORS[r].split(' ')[0]} />
+        <View style={styles.dropdown}>
+          <Pressable style={styles.dropdownBackdrop} onPress={() => setOpen(false)} />
+          <View style={styles.dropdownMenu}>
+            {(Object.keys(ROLE_LABELS) as Role[]).map((r) => (
+              <Pressable
+                key={r}
+                onPress={() => { setRole(r); setOpen(false); }}
+                style={({ pressed }) => [
+                  styles.dropdownItem,
+                  role === r && styles.dropdownItemActive,
+                  pressed && { opacity: 0.8 },
+                ]}
+              >
+                <Ionicons
+                  name={ROLE_ICONS[r]}
+                  size={18}
+                  color={role === r ? '#00d2ff' : '#64748b'}
+                />
+                <Text style={[styles.dropdownItemText, role === r && styles.dropdownItemTextActive]}>
                   {ROLE_LABELS[r]}
-                </button>
-              );
-            })}
-          </div>
-        </>
+                </Text>
+              </Pressable>
+            ))}
+          </View>
+        </View>
       )}
-    </div>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  selector: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 10, borderWidth: 1 },
+  selectorText: { fontSize: 14, fontWeight: '500' },
+  dropdown: { position: 'absolute', top: '100%', right: 0, marginTop: 8, zIndex: 50 },
+  dropdownBackdrop: { position: 'absolute', top: -1000, left: -1000, right: -1000, bottom: -1000 },
+  dropdownMenu: { width: 220, backgroundColor: '#121826', borderRadius: 12, borderWidth: 1, borderColor: '#1e293b', overflow: 'hidden' },
+  dropdownItem: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 16, paddingVertical: 12 },
+  dropdownItemActive: { backgroundColor: 'rgba(0,210,255,0.1)' },
+  dropdownItemText: { fontSize: 14, color: '#94a3b8' },
+  dropdownItemTextActive: { color: '#00d2ff', fontWeight: '600' },
+});
