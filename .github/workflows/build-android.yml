@@ -28,11 +28,11 @@ jobs:
       - name: Instalar dependências
         run: npm install
 
-      # Remova este passo se o APPSAMBOX não usar variáveis de ambiente públicas
-      # - name: Criar .env com variáveis do projeto
-      #   run: |
-      #     echo "SUA_VARIAVEL=${{ secrets.SUA_VARIAVEL }}" >> .env
-
+      - name: Criar .env com variáveis do projeto
+        run: |
+          echo "EXPO_PUBLIC_SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env
+          echo "EXPO_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}" >> .env
+          
       - name: Gerar pasta android (expo prebuild)
         run: npx expo prebuild --platform android
         env:
