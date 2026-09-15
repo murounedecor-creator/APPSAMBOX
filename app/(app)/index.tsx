@@ -5,6 +5,7 @@ import { useRole } from '@/lib/RoleContext';
 import { RoleSelector } from '@/components/RoleSelector';
 import { type Role } from '@/lib/supabase';
 import { router, useLocalSearchParams } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type Page = 'dashboard' | 'customers' | 'tickets' | 'sales' | 'metrics' | 'technicians' | 'plans';
 
@@ -27,6 +28,7 @@ const NAV_ITEMS: NavItem[] = [
 
 export default function AppLayout() {
   const { role } = useRole();
+  const insets = useSafeAreaInsets();
   const params = useLocalSearchParams<{ page?: string }>();
   const currentPage = (params.page as Page) || 'dashboard';
 
@@ -38,7 +40,7 @@ export default function AppLayout() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+      <View style={[styles.header, { paddingTop: insets.top + 12 }]}>
         <View style={styles.headerLeft}>
           <View style={styles.logo}>
             <Text style={styles.logoText}>G</Text>
