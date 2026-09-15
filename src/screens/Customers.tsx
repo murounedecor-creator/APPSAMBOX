@@ -40,7 +40,47 @@ export function CustomersScreen() {
     has_discount: false, discount_value: '0',
   });
 
-  const canEdit = role === 'owner' || role === 'manager';
+    const canEdit = role === 'owner' || role === 'manager';
+
+  async function handleCityChange(v: string) {
+    setForm(f => ({ ...f, city: v }));
+    if (v.trim().length < 2) {
+      setCitySuggestions([]);
+      setShowCitySuggestions(false);
+      return;
+    }
+    const list = await getCitiesList();
+    const q = v.trim().toLowerCase();
+    const matches = list.filter(c => c.name.toLowerCase().startsWith(q)).slice(0, 8);
+    setCitySuggestions(matches);
+    setShowCitySuggestions(matches.length > 0);
+  }
+
+  function selectCity(c: { name: string; uf: string }) {
+    setForm(f => ({ ...f, city: c.name, state: c.uf }));
+    setShowCitySuggestions(false);
+  }
+
+  async function handleCepChange(v: string) {
+    const digits = v.replace(/\D/g, '').slice(0, 8);
+    setForm(f => ({ ...f, zipcode: digits }));
+    if (digits.length === 8) {
+      try {
+        const res = await fetch(`https://viacep.com.br/ws/${digits}/json/`);
+        const data = await res.json();
+        if (!data.erro) {
+          setForm(f => ({
+            ...f,
+            address: data.logradouro || f.address,
+            city: data.localidade || f.city,
+            state: data.uf || f.state,
+          }));
+        }
+      } catch {
+        // sem conexão: mantém o que foi digitado manualmente
+      }
+    }
+  }
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -206,13 +246,22 @@ export function CustomersScreen() {
           <Input label="Endereço" value={form.address} onChange={v => setForm({ ...form, address: v })} />
           <View style={styles.row}>
             <View style={{ flex: 2 }}>
-              <Input label="Cidade" value={form.city} onChange={v => setForm({ ...form, city: v })} />
+              <Input label="Cidade" value={form.city} onChange={handleCityChange} />
+              {showCitySuggestions && (
+                <View style={styles.suggestionBox}>
+                  {citySuggestions.map((c, idx) => (
+                    <Pressable key={`${c.name}-${c.uf}-${idx}`} onPress={() => selectCity(c)} style={styles.suggestionItem}>
+                      <Text style={styles.suggestionText}>{c.name} — {c.uf}</Text>
+                    </Pressable>
+                  ))}
+                </View>
+              )}
             </View>
             <View style={{ flex: 1 }}>
               <Input label="UF" value={form.state} onChange={v => setForm({ ...form, state: v })} />
             </View>
             <View style={{ flex: 1 }}>
-              <Input label="CEP" value={form.zipcode} onChange={v => setForm({ ...form, zipcode: v })} keyboardType="numeric" />
+              <Input label="CEP" value={form.zipcode} onChange={handleCepChange} keyboardType="numeric" />
             </View>
           </View>
           <View style={styles.row}>
@@ -330,4 +379,7 @@ const styles = StyleSheet.create({
   planOptionText: { fontSize: 14, color: '#94a3b8' },
   planOptionTextActive: { color: '#00d2ff', fontWeight: '600' },
   deleteText: { color: '#94a3b8', fontSize: 14, lineHeight: 20 },
+  suggestionBox: { backgroundColor: '#0a0e17', borderWidth: 1, borderColor: '#1e293b', borderRadius: 10, marginTop: -8, marginBottom: 8, overflow: 'hidden' },
+  suggestionItem: { paddingHorizontal: 12, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#1e293b' },
+  suggestionText: { color: '#94a3b8', fontSize: 13 },
 });
