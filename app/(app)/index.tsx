@@ -92,7 +92,7 @@ export default function AppLayout() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#0a0e17' },
-  header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 12, backgroundColor: '#0b0c10', borderBottomWidth: 1, borderBottomColor: '#1e293b' },
+  header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 12, backgroundColor: '#0b0c10', borderBottomWidth: 1, borderBottomColor: '#1e293b', zIndex: 100, elevation: 10 },
   headerLeft: { flexDirection: 'row', alignItems: 'center', gap: 8 },
   logo: { width: 32, height: 32, borderRadius: 10, backgroundColor: '#00d2ff', alignItems: 'center', justifyContent: 'center' },
   logoText: { color: '#0a0e17', fontWeight: '700', fontSize: 14 },
