@@ -1,7 +1,6 @@
-import { type ReactNode } from 'react';
 import {
   View, Text, Pressable, TextInput, Modal as RNModal,
-  ScrollView, ActivityIndicator, StyleSheet
+  ScrollView, ActivityIndicator, StyleSheet, KeyboardAvoidingView, Platform
 } from 'react-native';
 
 const COLORS = {
@@ -33,7 +32,10 @@ export function Modal({
 }) {
   return (
     <RNModal visible={open} animationType="slide" transparent onRequestClose={onClose}>
-      <View style={styles.modalOverlay}>
+      <KeyboardAvoidingView
+        style={styles.modalOverlay}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
         <Pressable style={styles.modalBackdrop} onPress={onClose} />
         <View style={styles.modalCard}>
           <View style={styles.modalHeader}>
@@ -42,11 +44,15 @@ export function Modal({
               <Text style={styles.modalCloseText}>X</Text>
             </Pressable>
           </View>
-          <ScrollView style={styles.modalBody} showsVerticalScrollIndicator={false}>
+          <ScrollView
+            style={styles.modalBody}
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+          >
             {children}
           </ScrollView>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </RNModal>
   );
 }
