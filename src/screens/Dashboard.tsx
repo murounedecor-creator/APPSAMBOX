@@ -130,13 +130,14 @@ export function DashboardScreen() {
             <Text style={styles.emptyText}>Nenhum atendimento registrado.</Text>
           ) : (
             stats.recentTickets.map(t => (
-              <View key={t.id} style={styles.listItem}>
+              stats.recentTickets.map(t => (
+              <Pressable key={t.id} onPress={() => router.setParams({ page: 'tickets' })} style={({ pressed }) => [styles.listItem, pressed && { opacity: 0.6 }]}>
                 <View style={{ flex: 1 }}>
                   <Text style={styles.listItemTitle}>#{String(t.ticket_number).padStart(5, '0')} — {t.customer?.name || '-'}</Text>
                   <Text style={styles.listItemSub}>{TICKET_STATUS_LABELS[t.status as keyof typeof TICKET_STATUS_LABELS]}</Text>
                 </View>
                 <Badge color={statusColors[t.status]}>{TICKET_STATUS_LABELS[t.status as keyof typeof TICKET_STATUS_LABELS]}</Badge>
-              </View>
+              </Pressable>
             ))
           )}
         </View>
@@ -148,13 +149,13 @@ export function DashboardScreen() {
               <Text style={styles.emptyText}>Nenhuma venda registrada.</Text>
             ) : (
               stats.recentSales.map(s => (
-                <View key={s.id} style={styles.listItem}>
+                <Pressable key={s.id} onPress={() => router.setParams({ page: 'sales' })} style={({ pressed }) => [styles.listItem, pressed && { opacity: 0.6 }]}>
                   <View style={{ flex: 1 }}>
                     <Text style={styles.listItemTitle}>#{String(s.sale_number).padStart(5, '0')} — {s.customer?.name || '-'}</Text>
                     <Text style={styles.listItemSub}>{s.plan?.name || '-'} {s.variation ? `(${s.variation})` : ''}</Text>
                   </View>
                   <Text style={styles.saleAmount}>{formatBRL(s.final_amount)}</Text>
-                </View>
+                </Pressable>
               ))
             )}
           </View>
@@ -167,10 +168,10 @@ export function DashboardScreen() {
             <Text style={styles.sectionTitle}>Desempenho de Anúncios (Mês)</Text>
           </View>
           <View style={styles.miniGrid}>
-            <MiniStat label="Impressões" value={stats.adImpressions.toLocaleString('pt-BR')} />
-            <MiniStat label="Cliques" value={stats.adClicks.toLocaleString('pt-BR')} />
-            <MiniStat label="Conversões" value={String(stats.adConversions)} />
-            <MiniStat label="Investimento" value={formatBRL(stats.adSpend)} />
+            <MiniStat label="Impressões" value={stats.adImpressions.toLocaleString('pt-BR')} onPress={() => router.setParams({ page: 'metrics' })} />
+            <MiniStat label="Cliques" value={stats.adClicks.toLocaleString('pt-BR')} onPress={() => router.setParams({ page: 'metrics' })} />
+            <MiniStat label="Conversões" value={String(stats.adConversions)} onPress={() => router.setParams({ page: 'metrics' })} />
+            <MiniStat label="Investimento" value={formatBRL(stats.adSpend)} onPress={() => router.setParams({ page: 'metrics' })} />
           </View>
           {stats.adSpend > 0 && (
             <View style={styles.roasBox}>
@@ -189,25 +190,25 @@ function formatBRL(v: number) {
   return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(v);
 }
 
-function StatCard({ icon, label, value, subtext }: { icon: IconName; label: string; value: string | number; subtext?: string }) {
+function StatCard({ icon, label, value, subtext, onPress }: { icon: IconName; label: string; value: string | number; subtext?: string; onPress?: () => void }) {
   return (
-    <View style={styles.statCard}>
+    <Pressable onPress={onPress} style={({ pressed }) => [styles.statCard, pressed && { opacity: 0.7 }]}>
       <View style={styles.statIcon}>
         <Ionicons name={icon} size={20} color="#00d2ff" />
       </View>
       <Text style={styles.statValue}>{value}</Text>
       <Text style={styles.statLabel}>{label}</Text>
       {subtext && <Text style={styles.statSubtext}>{subtext}</Text>}
-    </View>
+    </Pressable>
   );
 }
 
-function MiniStat({ label, value }: { label: string; value: string }) {
+function MiniStat({ label, value, onPress }: { label: string; value: string; onPress?: () => void }) {
   return (
-    <View style={styles.miniStat}>
+    <Pressable onPress={onPress} style={({ pressed }) => [styles.miniStat, pressed && { opacity: 0.6 }]}>
       <Text style={styles.miniStatValue}>{value}</Text>
       <Text style={styles.miniStatLabel}>{label}</Text>
-    </View>
+    </Pressable>
   );
 }
 
