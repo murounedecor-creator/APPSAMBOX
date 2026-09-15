@@ -34,13 +34,15 @@ export function CustomersScreen() {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [customerPlans, setCustomerPlans] = useState<CustomerPlan[]>([]);
   const [deleteConfirm, setDeleteConfirm] = useState<Customer | null>(null);
+  const [citySuggestions, setCitySuggestions] = useState<{ name: string; uf: string }[]>([]);
+  const [showCitySuggestions, setShowCitySuggestions] = useState(false);
 
   const [form, setForm] = useState({
     name: '', phone: '', email: '', cpf_cnpj: '', address: '', city: '', state: '', zipcode: '', notes: '',
     has_discount: false, discount_value: '0',
   });
 
-    const canEdit = role === 'owner' || role === 'manager';
+  const canEdit = role === 'owner' || role === 'manager';
 
   async function handleCityChange(v: string) {
     setForm(f => ({ ...f, city: v }));
@@ -85,7 +87,7 @@ export function CustomersScreen() {
   const load = useCallback(async () => {
     setLoading(true);
     const [custRes, planRes] = await Promise.all([
-      supabase.from('customers').select('*').order('created_at', { ascending: false }),
+      supabase.from('customers').select('*').order('name'),
       supabase.from('plans').select('*').eq('active', true).order('name'),
     ]);
     setCustomers(custRes.data || []);

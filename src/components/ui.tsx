@@ -1,3 +1,4 @@
+import { type ReactNode } from 'react';
 import {
   View, Text, Pressable, TextInput, Modal as RNModal,
   ScrollView, ActivityIndicator, StyleSheet, KeyboardAvoidingView, Platform

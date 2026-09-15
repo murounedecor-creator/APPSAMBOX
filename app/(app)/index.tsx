@@ -1,11 +1,18 @@
 import { useState } from 'react';
-import { View, Text, Pressable, ScrollView, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, Pressable, ScrollView, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRole } from '@/lib/RoleContext';
 import { RoleSelector } from '@/components/RoleSelector';
 import { type Role } from '@/lib/supabase';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { DashboardScreen } from '@/screens/Dashboard';
+import { CustomersScreen } from '@/screens/Customers';
+import { TicketsScreen } from '@/screens/Tickets';
+import { SalesScreen } from '@/screens/Sales';
+import { MetricsScreen } from '@/screens/Metrics';
+import { TechniciansScreen } from '@/screens/Technicians';
+import { PlansScreen } from '@/screens/Plans';
 
 type Page = 'dashboard' | 'customers' | 'tickets' | 'sales' | 'metrics' | 'technicians' | 'plans';
 
@@ -82,14 +89,6 @@ export default function AppLayout() {
     </View>
   );
 }
-
-import { DashboardScreen } from '@/screens/Dashboard';
-import { CustomersScreen } from '@/screens/Customers';
-import { TicketsScreen } from '@/screens/Tickets';
-import { SalesScreen } from '@/screens/Sales';
-import { MetricsScreen } from '@/screens/Metrics';
-import { TechniciansScreen } from '@/screens/Technicians';
-import { PlansScreen } from '@/screens/Plans';
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#0a0e17' },

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { View, Text, ScrollView, Pressable, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import { supabase, type Ticket, type Sale, type AdMetric, TICKET_STATUS_LABELS } from '@/lib/supabase';
 import { useRole } from '@/lib/RoleContext';
 import { LoadingSpinner, Badge } from '@/components/ui';
@@ -103,22 +104,22 @@ export function DashboardScreen() {
       </View>
 
       <View style={styles.cardGrid}>
-        <StatCard icon="people" label="Clientes" value={stats.customersTotal} subtext={`${stats.customersNewMonth} novos este mês`} />
-        <StatCard icon="ticket" label="Atendimentos Ativos" value={stats.activeTickets} subtext={`${stats.pendingTickets} pendentes`} />
-        {isManager && <StatCard icon="cash" label="Vendas Hoje" value={stats.salesTodayCount} subtext={formatBRL(stats.salesTodayRevenue)} />}
-        {isManager && <StatCard icon="trending-up" label="Receita do Mês" value={formatBRL(stats.salesMonthRevenue)} subtext={`${stats.salesMonthCount} vendas`} />}
-        {isTechnician && <StatCard icon="time" label="Meus Atendimentos" value={stats.activeTickets} subtext="Em andamento" />}
-        {isTechnician && <StatCard icon="checkmark-circle" label="Concluídos Hoje" value={stats.completedToday} subtext="Finalizados" />}
+        <StatCard icon="people" label="Clientes" value={stats.customersTotal} subtext={`${stats.customersNewMonth} novos este mês`} onPress={() => router.setParams({ page: 'customers' })} />
+        <StatCard icon="ticket" label="Atendimentos Ativos" value={stats.activeTickets} subtext={`${stats.pendingTickets} pendentes`} onPress={() => router.setParams({ page: 'tickets' })} />
+        {isManager && <StatCard icon="cash" label="Vendas Hoje" value={stats.salesTodayCount} subtext={formatBRL(stats.salesTodayRevenue)} onPress={() => router.setParams({ page: 'sales' })} />}
+        {isManager && <StatCard icon="trending-up" label="Receita do Mês" value={formatBRL(stats.salesMonthRevenue)} subtext={`${stats.salesMonthCount} vendas`} onPress={() => router.setParams({ page: 'sales' })} />}
+        {isTechnician && <StatCard icon="time" label="Meus Atendimentos" value={stats.activeTickets} subtext="Em andamento" onPress={() => router.setParams({ page: 'tickets' })} />}
+        {isTechnician && <StatCard icon="checkmark-circle" label="Concluídos Hoje" value={stats.completedToday} subtext="Finalizados" onPress={() => router.setParams({ page: 'tickets' })} />}
       </View>
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Status dos Atendimentos</Text>
         <View style={styles.statusGrid}>
           {Object.entries(TICKET_STATUS_LABELS).map(([key, label]) => (
-            <View key={key} style={styles.statusCard}>
+            <Pressable key={key} onPress={() => router.setParams({ page: 'tickets' })} style={({ pressed }) => [styles.statusCard, pressed ? { opacity: 0.6 } : null]}>
               <Text style={styles.statusValue}>{stats.ticketsByStatus[key] || 0}</Text>
               <Badge color={statusColors[key]}>{label}</Badge>
-            </View>
+            </Pressable>
           ))}
         </View>
       </View>
@@ -130,8 +131,7 @@ export function DashboardScreen() {
             <Text style={styles.emptyText}>Nenhum atendimento registrado.</Text>
           ) : (
             stats.recentTickets.map(t => (
-              stats.recentTickets.map(t => (
-              <Pressable key={t.id} onPress={() => router.setParams({ page: 'tickets' })} style={({ pressed }) => [styles.listItem, pressed && { opacity: 0.6 }]}>
+              <Pressable key={t.id} onPress={() => router.setParams({ page: 'tickets' })} style={({ pressed }) => [styles.listItem, pressed ? { opacity: 0.6 } : null]}>
                 <View style={{ flex: 1 }}>
                   <Text style={styles.listItemTitle}>#{String(t.ticket_number).padStart(5, '0')} — {t.customer?.name || '-'}</Text>
                   <Text style={styles.listItemSub}>{TICKET_STATUS_LABELS[t.status as keyof typeof TICKET_STATUS_LABELS]}</Text>
@@ -149,7 +149,7 @@ export function DashboardScreen() {
               <Text style={styles.emptyText}>Nenhuma venda registrada.</Text>
             ) : (
               stats.recentSales.map(s => (
-                <Pressable key={s.id} onPress={() => router.setParams({ page: 'sales' })} style={({ pressed }) => [styles.listItem, pressed && { opacity: 0.6 }]}>
+                <Pressable key={s.id} onPress={() => router.setParams({ page: 'sales' })} style={({ pressed }) => [styles.listItem, pressed ? { opacity: 0.6 } : null]}>
                   <View style={{ flex: 1 }}>
                     <Text style={styles.listItemTitle}>#{String(s.sale_number).padStart(5, '0')} — {s.customer?.name || '-'}</Text>
                     <Text style={styles.listItemSub}>{s.plan?.name || '-'} {s.variation ? `(${s.variation})` : ''}</Text>
@@ -192,7 +192,7 @@ function formatBRL(v: number) {
 
 function StatCard({ icon, label, value, subtext, onPress }: { icon: IconName; label: string; value: string | number; subtext?: string; onPress?: () => void }) {
   return (
-    <Pressable onPress={onPress} style={({ pressed }) => [styles.statCard, pressed && { opacity: 0.7 }]}>
+    <Pressable onPress={onPress} style={({ pressed }) => [styles.statCard, pressed ? { opacity: 0.7 } : null]}>
       <View style={styles.statIcon}>
         <Ionicons name={icon} size={20} color="#00d2ff" />
       </View>
@@ -205,7 +205,7 @@ function StatCard({ icon, label, value, subtext, onPress }: { icon: IconName; la
 
 function MiniStat({ label, value, onPress }: { label: string; value: string; onPress?: () => void }) {
   return (
-    <Pressable onPress={onPress} style={({ pressed }) => [styles.miniStat, pressed && { opacity: 0.6 }]}>
+    <Pressable onPress={onPress} style={({ pressed }) => [styles.miniStat, pressed ? { opacity: 0.6 } : null]}>
       <Text style={styles.miniStatValue}>{value}</Text>
       <Text style={styles.miniStatLabel}>{label}</Text>
     </Pressable>
