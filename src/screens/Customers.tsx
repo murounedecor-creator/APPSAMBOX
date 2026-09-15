@@ -5,6 +5,23 @@ import { supabase, type Customer, type Plan, type CustomerPlan } from '@/lib/sup
 import { useRole } from '@/lib/RoleContext';
 import { Modal, Button, Input, Textarea, Badge, EmptyState, LoadingSpinner } from '@/components/ui';
 
+let citiesCache: { name: string; uf: string }[] | null = null;
+
+async function getCitiesList(): Promise<{ name: string; uf: string }[]> {
+  if (citiesCache) return citiesCache;
+  try {
+    const res = await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/municipios');
+    const data = await res.json();
+    citiesCache = data.map((m: any) => ({
+      name: m.nome as string,
+      uf: m?.microrregiao?.mesorregiao?.UF?.sigla || '',
+    }));
+    return citiesCache!;
+  } catch {
+    return [];
+  }
+}
+
 export function CustomersScreen() {
   const { role } = useRole();
   const [loading, setLoading] = useState(true);
