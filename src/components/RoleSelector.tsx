@@ -70,7 +70,7 @@ export function RoleSelector() {
 const styles = StyleSheet.create({
   selector: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 10, borderWidth: 1 },
   selectorText: { fontSize: 14, fontWeight: '500' },
-  dropdown: { position: 'absolute', top: '100%', right: 0, marginTop: 8, zIndex: 50 },
+  dropdown: { position: 'absolute', top: '100%', right: 0, marginTop: 8, zIndex: 999, elevation: 20 },
   dropdownBackdrop: { position: 'absolute', top: -1000, left: -1000, right: -1000, bottom: -1000 },
   dropdownMenu: { width: 220, backgroundColor: '#121826', borderRadius: 12, borderWidth: 1, borderColor: '#1e293b', overflow: 'hidden' },
   dropdownItem: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingHorizontal: 16, paddingVertical: 12 },
