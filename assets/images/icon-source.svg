@@ -1,0 +1,31 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1B1035"/>
+      <stop offset="55%" stop-color="#3A1C71"/>
+      <stop offset="100%" stop-color="#0B1023"/>
+    </linearGradient>
+    <linearGradient id="diamondGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6A35C9"/>
+      <stop offset="100%" stop-color="#1E1240"/>
+    </linearGradient>
+    <linearGradient id="padGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6FE0FF"/>
+      <stop offset="100%" stop-color="#2E6BFF"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="1024" height="1024" fill="url(#bgGrad)"/>
+
+  <polygon points="512,110 914,512 512,914 110,512" fill="url(#diamondGrad)" opacity="0.9"/>
+
+  <g>
+    <rect x="292" y="432" width="440" height="170" rx="85" fill="url(#padGrad)" stroke="#0B1023" stroke-width="10"/>
+    <rect x="378" y="490" width="70" height="22" rx="6" fill="#0B1023"/>
+    <rect x="402" y="466" width="22" height="70" rx="6" fill="#0B1023"/>
+    <circle cx="628" cy="480" r="16" fill="#0B1023"/>
+    <circle cx="662" cy="514" r="16" fill="#0B1023"/>
+    <circle cx="628" cy="548" r="16" fill="#0B1023"/>
+    <circle cx="594" cy="514" r="16" fill="#0B1023"/>
+  </g>
+</svg>

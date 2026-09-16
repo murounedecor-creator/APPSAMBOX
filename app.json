@@ -12,11 +12,16 @@
       "bundleIdentifier": "com.gestao.operacional"
     },
     "android": {
-      "package": "com.gestao.operacional"
+      "package": "com.gestao.operacional",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#150C29"
+      }
     },
     "plugins": [
       "expo-router",
       "./plugins/withAndroidReleaseSigning.js"
-    ]
+    ],
+    "icon": "./assets/images/icon.png"
   }
 }
