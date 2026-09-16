@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
   modalTitle: { fontSize: 18, fontWeight: '600', color: COLORS.text },
   modalCloseBtn: { padding: 8 },
   modalCloseText: { color: COLORS.textMuted, fontSize: 16, fontWeight: '600' },
-  modalBody: { flex: 1 },
+  modalBody: { flexGrow: 1, flexShrink: 1 },
   modalBodyContent: { paddingHorizontal: 20, paddingVertical: 20, paddingBottom: 32 },
   btnBase: { borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
   inputContainer: { marginBottom: 16 },
