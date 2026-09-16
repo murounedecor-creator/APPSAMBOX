@@ -254,7 +254,7 @@ export function LoadingSpinner() {
 const styles = StyleSheet.create({
   modalOverlay: { flex: 1, justifyContent: 'flex-end' },
   modalBackdrop: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.7)' },
-  modalCard: { backgroundColor: COLORS.card, borderTopLeftRadius: 20, borderTopRightRadius: 20, maxHeight: '90%', borderColor: COLORS.border, borderWidth: 1 },
+  modalCard: { backgroundColor: COLORS.card, borderTopLeftRadius: 20, borderTopRightRadius: 20, maxHeight: '90%', borderColor: COLORS.border, borderWidth: 1, overflow: 'hidden' },
   modalHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, paddingVertical: 16, borderBottomWidth: 1, borderBottomColor: COLORS.border },
   modalTitle: { fontSize: 18, fontWeight: '600', color: COLORS.text },
   modalCloseBtn: { padding: 8 },

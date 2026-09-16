@@ -8,6 +8,7 @@ import {
 } from '@/lib/supabase';
 import { useRole } from '@/lib/RoleContext';
 import { Modal, Button, Input, Select, Textarea, Badge, EmptyState, LoadingSpinner } from '@/components/ui';
+import { DateField, TimeField } from '@/components/DateTimePicker';
 
 export function TicketsScreen() {
   const { role, technicianId, setTechnicianId } = useRole();
@@ -219,10 +220,10 @@ export function TicketsScreen() {
           )}
           <View style={styles.row}>
             <View style={{ flex: 1 }}>
-              <Input label="Data Agendada" value={form.scheduled_date} onChange={v => setForm({ ...form, scheduled_date: v })} placeholder="AAAA-MM-DD" />
+              <DateField label="Data Agendada" value={form.scheduled_date} onChange={v => setForm({ ...form, scheduled_date: v })} />
             </View>
             <View style={{ flex: 1 }}>
-              <Input label="Hora" value={form.scheduled_time} onChange={v => setForm({ ...form, scheduled_time: v })} placeholder="HH:MM" />
+              <TimeField label="Hora" value={form.scheduled_time} onChange={v => setForm({ ...form, scheduled_time: v })} />
             </View>
           </View>
           <Textarea label="Descrição" value={form.description} onChange={v => setForm({ ...form, description: v })} placeholder="Descreva o atendimento..." />
