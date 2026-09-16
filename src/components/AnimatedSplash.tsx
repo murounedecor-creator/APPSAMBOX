@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useRef, useState } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 
-const LOGO = require('../assets/images/icon.png');
+const LOGO = require('../../assets/images/icon.png');
 const BACKGROUND_COLOR = '#150C29';
 const FADE_IN_DURATION = 900;
 const HOLD_DURATION = 400;
