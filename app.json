@@ -20,7 +20,15 @@
     },
     "plugins": [
       "expo-router",
-      "./plugins/withAndroidReleaseSigning.js"
+      "./plugins/withAndroidReleaseSigning.js",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/icon.png",
+          "resizeMode": "contain",
+          "backgroundColor": "#150C29"
+        }
+      ]
     ],
     "icon": "./assets/images/icon.png"
   }
