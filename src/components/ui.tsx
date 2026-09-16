@@ -47,6 +47,7 @@ export function Modal({
           </View>
           <ScrollView
             style={styles.modalBody}
+            contentContainerStyle={styles.modalBodyContent}
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="handled"
           >
@@ -259,7 +260,8 @@ const styles = StyleSheet.create({
   modalTitle: { fontSize: 18, fontWeight: '600', color: COLORS.text },
   modalCloseBtn: { padding: 8 },
   modalCloseText: { color: COLORS.textMuted, fontSize: 16, fontWeight: '600' },
-  modalBody: { paddingHorizontal: 20, paddingVertical: 20 },
+  modalBody: { flex: 1 },
+  modalBodyContent: { paddingHorizontal: 20, paddingVertical: 20, paddingBottom: 32 },
   btnBase: { borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
   inputContainer: { marginBottom: 16 },
   inputLabel: { fontSize: 14, fontWeight: '500', color: COLORS.textDim, marginBottom: 6 },
